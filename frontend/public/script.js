@@ -1,7 +1,7 @@
 const formComponent = `
 <form id="form">
     <input type="text" name="title">
-    <input type="file" name="pocture">
+    <input type="file" name="picture">
     <button>Send</button>
  </form>
  `;
@@ -19,7 +19,7 @@ function loadEvent() {
         //Object constructor
         const formData = new FormData();
         formData.append("title", e.target.querySelector(`input[name="title"]`).value);
-        formData.append("picture", e.target.querySelector(`input[name="title"]`).files[0]);
+        formData.append("picture", e.target.querySelector(`input[name="picture"]`).files[0]);
 
         const fetchSettings = {
             method:"POST",
@@ -27,9 +27,10 @@ function loadEvent() {
         };
         
         fetch("/", fetchSettings)
-            .then(data => {
+            .then(async data => {
                 if (data.status === 200) {
-                e.target.outerHTML = "Done";
+                const res = await data.json()
+                e.target.outerHTML = `<img src="upload/${res.pictureName}">`;
                 console.dir(data);
                 }
             })
